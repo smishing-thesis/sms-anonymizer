@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset name="fake_dataset_for_tests" task="binary_spam_classification" default_label="spam">
+  <message id="fake_001">
+    <label>spam</label>
+    <channel>SMS</channel>
+    <sender_display>+51 900 000 111</sender_display>
+    <date_display>1 ene. 2026, 10:00 a. m.</date_display>
+    <date_iso>2026-01-01T10:00:00-05:00</date_iso>
+    <category>invented_category</category>
+    <body>Mensaje inventado para pruebas, ignora este texto</body>
+  </message>
+  <message id="fake_002">
+    <label>spam</label>
+    <channel>iMessage</channel>
+    <sender_display>+51 900 000 222</sender_display>
+    <date_display>2 ene. 2026, 11:00 a. m.</date_display>
+    <date_iso>2026-01-02T11:00:00-05:00</date_iso>
+    <category>invented_category</category>
+    <body>Otro mensaje inventado, tambien de prueba</body>
+  </message>
+</dataset>

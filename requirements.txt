@@ -1,0 +1,6 @@
+openpyxl==3.1.5
+spacy==3.8.16
+ftfy==6.3.1
+
+# es_core_news_lg is not a pip package — install it separately with:
+#   python -m spacy download es_core_news_lg==3.8.0

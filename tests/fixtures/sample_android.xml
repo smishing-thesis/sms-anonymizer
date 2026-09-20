@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<smses count="2">
+  <sms protocol="0" address="+51900000001" date="1700000000000" type="1" body="Hola Rosa Ficticia, te comparto mi correo falso.persona@ejemplo-invent.com y mi numero 987 654 321" />
+  <sms protocol="0" address="+51900000002" date="1700000100000" type="2" body="Listo, revisa www.ejemplo-invent-no-real.com para mas info" />
+</smses>
