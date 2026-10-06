@@ -23,3 +23,13 @@ def test_clean_text_produces_no_findings():
         findings = scan_residuals(rows)
 
     assert findings == []
+
+
+def test_reports_known_name_that_slipped_through():
+    rows = [("id:0", "Hola ROSA FICTICIA, todo bien"), ("id:1", "Hola <NAMED_ENTITY>, todo bien")]
+
+    with patch("sms_anonymizer.verify.residual_scan.find_names", return_value=[]):
+        findings = scan_residuals(rows, known_names=["Rosa", "Ficticia"])
+
+    assert [f["id"] for f in findings] == ["id:0"]
+    assert findings[0]["placeholders_missed"] == ["<NAMED_ENTITY>"]

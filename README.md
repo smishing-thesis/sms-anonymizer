@@ -71,6 +71,19 @@ python -m sms_anonymizer.cli process \
   `data/`) used to pseudonymize senders. Keep it stable across runs if you
   want the sender-concentration report to be comparable over time; treat it
   like a password — never commit it, never share it.
+- `--known-names` (default `data/known_names.txt`) is a local, gitignored
+  list of names/surnames (one per line) that are always replaced by
+  `<NAMED_ENTITY>`, whatever the NER does — meant for the chat owners' own
+  names. Matching is whole-word, case- and accent-insensitive.
+- **Adding more data keeps your labels.** Before rewriting `--output`, the
+  pipeline reads the labels already in it and copies them onto every row with
+  the *exact same anonymized text*; only new rows come out unlabeled. A
+  timestamped backup (`messages.bak-YYYYMMDD-HHMMSS.xlsx`) is written first.
+  `--carry-labels FILE` (repeatable) does the same from other labeled
+  workbooks. Pass **every** source on each run: a labeled message whose
+  source is left out (or whose anonymized text changed) is not carried over,
+  and the run prints a warning with the count. Close the workbook in Excel
+  before running.
 - `--stats` records counts per source and discards per reason, consumed
   later by `finalize` to build the run's manifest.
 - `--review-sample` writes a random N before/after sample for manual QA.

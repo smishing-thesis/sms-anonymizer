@@ -2,6 +2,7 @@ from collections import Counter
 from datetime import datetime, timezone
 
 from ..anonymize.anonymizer import anonymize_with_stats
+from ..anonymize.known_names import compile_known_names
 from ..anonymize.sender import classify_sender, pseudonymize_sender
 from ..clean.dedupe import dedupe
 from ..clean.length_filter import filter_min_length
@@ -12,12 +13,16 @@ from .records import ProcessedMessage
 
 
 def run_ingest_and_anonymize(
-    sources: list[tuple[str, str]], salt_path: str, min_length: int
+    sources: list[tuple[str, str]],
+    salt_path: str,
+    min_length: int,
+    known_names: list[str] | None = None,
 ) -> tuple[list[ProcessedMessage], list[tuple[str, str]], dict, dict, dict]:
     """sources: (format_name, path) pairs. Returns (messages, before_after_pairs,
     counts_by_source, discards_by_reason, replacement_counts)."""
     processed: list[ProcessedMessage] = []
     before_after: list[tuple[str, str]] = []
+    known_names_pattern = compile_known_names(known_names or [])
     counts_by_source: Counter = Counter()
     discards_by_reason: Counter = Counter()
     replacement_counts: Counter = Counter()
@@ -32,7 +37,7 @@ def run_ingest_and_anonymize(
                 discards_by_reason["empty_after_cleaning"] += 1
                 continue
 
-            anonymized, stats = anonymize_with_stats(body)
+            anonymized, stats = anonymize_with_stats(body, known_names_pattern)
             before_after.append((body, anonymized))
             replacement_counts.update(stats)
 

@@ -1,10 +1,12 @@
 import csv
+from pathlib import Path
 from typing import Iterator
 
 from .models import RawMessage
 
 
 def parse(path: str) -> Iterator[RawMessage]:
+    stem = Path(path).stem  # keeps ids unique when several CSVs are ingested
     with open(path, encoding="utf-8-sig", newline="") as f:
         reader = csv.DictReader(f)
         if not reader.fieldnames or "text" not in reader.fieldnames:
@@ -13,7 +15,7 @@ def parse(path: str) -> Iterator[RawMessage]:
         for index, row in enumerate(reader):
             timestamp = (row.get("timestamp") or "").strip()
             yield RawMessage(
-                id=f"csv:{index}",
+                id=f"csv:{stem}:{index}",
                 source="csv",
                 direction=None,
                 timestamp=int(timestamp) if timestamp.isdigit() else None,

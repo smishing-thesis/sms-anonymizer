@@ -20,7 +20,7 @@ def test_captures_sender_service_and_body():
 
 def test_assigns_id_from_message_attribute_and_marks_direction_in():
     messages = list(parse(str(FIXTURE)))
-    assert messages[0].id == "curated_xml:fake_001"
+    assert messages[0].id == "curated_xml:sample_curated:fake_001"
     assert messages[0].direction == "in"
 
 

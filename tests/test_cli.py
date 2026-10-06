@@ -26,10 +26,15 @@ def test_pipeline_then_finalize_end_to_end(tmp_path, monkeypatch):
     spec_path = tmp_path / "spec.json"
     verify_report = tmp_path / "verify_report.json"
 
+    names_path = tmp_path / "known_names.txt"
+    names_path.write_text("Ficticia\n", encoding="utf-8")
+
     parser = build_parser()
     args = parser.parse_args(
         [
             "pipeline",
+            "--known-names",
+            str(names_path),
             "--spec-output",
             str(spec_path),
             "--source",

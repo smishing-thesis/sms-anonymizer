@@ -4,13 +4,13 @@ from typing import Optional
 # Bump this whenever a rule's pattern or placeholder changes — it gets
 # stamped into every manifest and the exported spec file, and the Kotlin
 # reimplementation must track the same value.
-RULES_VERSION = "1.1.0"
+RULES_VERSION = "1.2.0"
 
 
 @dataclass(frozen=True)
 class Rule:
     name: str
-    kind: str  # "regex" or "ner"
+    kind: str  # "regex", "ner" or "wordlist"
     placeholder: str
     priority: int  # higher wins when spans overlap
     pattern: Optional[str]
@@ -58,6 +58,19 @@ TEXT_RULES: list[Rule] = [
         priority=1,
         pattern=None,
         description="Person names, detected via spaCy es_core_news_lg NER (PER entities).",
+    ),
+    Rule(
+        name="known_names",
+        kind="wordlist",
+        placeholder="<NAMED_ENTITY>",
+        # Above "person_name": the NER often splits or misses all-caps full
+        # names, so an explicit list of the chat owners' names wins over it.
+        priority=3,
+        pattern=None,
+        description=(
+            "Names/surnames from a local, never-committed list (e.g. the chat owners). "
+            "Whole-word, case- and accent-insensitive; consecutive names merge into one span."
+        ),
     ),
 ]
 

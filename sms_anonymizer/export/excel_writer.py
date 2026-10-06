@@ -4,15 +4,21 @@ from openpyxl.worksheet.datavalidation import DataValidation
 from ..schema.labels import ALLOWED_LABELS
 
 
-def write_labeling_workbook(rows: list[tuple[str, str]], output_path: str) -> None:
+def write_labeling_workbook(
+    rows: list[tuple[str, str]],
+    output_path: str,
+    existing_labels: dict[str, str] | None = None,
+) -> None:
     """rows: (id, anonymized_text) pairs. Writes an id/text/label sheet with
-    a dropdown restricting the label column to ALLOWED_LABELS."""
+    a dropdown restricting the label column to ALLOWED_LABELS. Rows whose exact
+    text is in existing_labels start out pre-labeled; the rest are left blank."""
+    existing_labels = existing_labels or {}
     wb = Workbook()
     ws = wb.active
     ws.title = "messages"
     ws.append(["id", "text", "label"])
     for row_id, text in rows:
-        ws.append([row_id, text, None])
+        ws.append([row_id, text, existing_labels.get(text)])
 
     last_row = max(len(rows) + 1, 2)
     dv = DataValidation(

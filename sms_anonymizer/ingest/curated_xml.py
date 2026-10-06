@@ -1,5 +1,6 @@
 import xml.etree.ElementTree as ET
 from datetime import datetime
+from pathlib import Path
 from typing import Iterator, Optional
 
 from .models import RawMessage
@@ -20,9 +21,10 @@ def parse(path: str) -> Iterator[RawMessage]:
     <label> is intentionally ignored — every message still goes through
     manual scam/ham labeling like every other source."""
     root = ET.parse(path).getroot()
+    stem = Path(path).stem  # keeps ids unique when several curated files are ingested
     for index, elem in enumerate(root.findall("message")):
         yield RawMessage(
-            id=f"curated_xml:{elem.get('id') or index}",
+            id=f"curated_xml:{stem}:{elem.get('id') or index}",
             source="curated_xml",
             direction="in",
             timestamp=_parse_timestamp(elem.findtext("date_iso")),

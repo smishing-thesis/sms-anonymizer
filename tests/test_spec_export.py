@@ -8,7 +8,7 @@ def test_build_spec_includes_version_and_all_text_rules():
     spec = build_spec()
     assert spec["rules_version"] == RULES_VERSION
     names = {rule["name"] for rule in spec["text_rules"]}
-    assert names == {"url", "email", "phone_pe", "person_name"}
+    assert names == {"url", "email", "phone_pe", "person_name", "known_names"}
 
 
 def test_write_spec_produces_valid_json(tmp_path):

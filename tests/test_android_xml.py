@@ -19,7 +19,7 @@ def test_maps_direction_and_body():
 
 def test_assigns_stable_source_and_ids():
     messages = list(parse(str(FIXTURE)))
-    assert messages[0].id == "android_xml:0"
+    assert messages[0].id == "android_xml:sample_android:0"
     assert messages[0].source == "android_xml"
 
 
